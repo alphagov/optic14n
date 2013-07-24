@@ -1,5 +1,6 @@
-require "optic14n/version"
+require 'optic14n/version'
 
-module Optic14n
-  # Your code goes here...
-end
+require 'addressable/uri'
+require 'cgi'
+require 'uri/query_hash'
+require 'uri/bluri'
