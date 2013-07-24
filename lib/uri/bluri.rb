@@ -8,7 +8,7 @@ module URI
     def_delegators :@uri, :scheme, :path, :host, :host=, :query, :to_s
 
     def initialize(uri_str)
-      @uri = ::Addressable::URI.parse(uri_str)
+      @uri = ::Addressable::URI.parse(uri_str.downcase)
       raise URI::InvalidURIError, "'#{uri_str}' not a valid URI" unless @uri
     end
 
@@ -63,7 +63,7 @@ module URI
     end
 
     def canonicalize!
-      # no-op after removals
+      # currently no-op after removals
       self
     end
 
