@@ -65,7 +65,7 @@ module URI
 
     # BEGIN DODGY SECTION - get this onto the query hash somehow
 
-    #
+    ##
     # Reorder the query string according to symbols or string key values
     # passed in in order
     #
@@ -75,12 +75,19 @@ module URI
       self
     end
 
+    ##
+    # Delete given query keys only
+    # e.g. some_uri.delete_query_keys(:itemid, :topicid)
+    #
     def delete_query_keys!(*args)
       return self unless has_query?
       self.query = query_hash.delete_keys(*args)
       self
     end
 
+    ##
+    # Set a query key value
+    #
     def []=(key, value)
       return self unless has_query?
       query_hash[key] = value
@@ -88,6 +95,9 @@ module URI
       self
     end
 
+    ##
+    # Passthrough for delete_if. Code smell.
+    #
     def delete_query_keys_matching!(&block)
       return self unless has_query?
       self.query = query_hash.delete_if(&block).to_s
