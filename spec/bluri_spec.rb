@@ -60,8 +60,8 @@ describe URI::BLURI do
       @bluri.query_hash[:eerie_flash].should == nil
     end
 
-    it 'indexes the query string' do
-      @bluri.query_hash['type'].should == 'RESOURCE'
+    it 'indexes the second query string item' do
+      @bluri.query_hash['type'].should == 'resource'
     end
 
     it 'allows setting of the query' do
@@ -72,7 +72,7 @@ describe URI::BLURI do
     describe 'reordering the query string' do
       it 'allows sorting of the query string by in-place replacement' do
         @bluri.reorder_query_string!(:type, :itemid, :type)
-        @bluri.query.should == 'type=RESOURCE&itemid=1'
+        @bluri.query.should == 'type=resource&itemid=1'
       end
 
       it 'should bunch repeated items up' do
@@ -104,11 +104,6 @@ describe URI::BLURI do
         bluri.reorder_query_string!(:itemid, :type)
         bluri.to_s.should == TOPIC_URI
       end
-
-      it 'should handle cased params' do
-        bluri = BLURI(ITEM_URI).reorder_query_string!(:itemId, :type)
-        bluri.query.should == EXPECTED_QUERY
-      end
     end
   end
 
@@ -134,21 +129,5 @@ describe URI::BLURI do
       uri['q'] = '3'
       uri.to_s.should == 'http://foo?q=3&r=2'
     end
-  end
-
-
-  describe 'Canonicalization' do
-    it 'should order page query elements' do
-      BLURI('http://online.businesslink.gov.uk/bdotg/action/findcontactbrowse?letter=K&page=1&topicId=1074537159').
-          canonicalize!.query.should == 'letter=K&page=1&topicId=1074537159'
-    end
-
-    describe 'Contact URLs' do
-      subject do
-        BLURI('https://online.businesslink.gov.uk/bdotg/action/findcontactdetail?itemId=1074044196&type=CONTACT&contactUs=&page=1').
-            canonicalize!
-      end
-    end
-
   end
 end

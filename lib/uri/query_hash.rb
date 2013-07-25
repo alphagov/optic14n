@@ -25,6 +25,14 @@ module URI
       keys.map { |key| render_value(key, self[key]) }.join('&')
     end
 
+    ##
+    # Creates a new hash populated with the given objects.
+    def self.[](value)
+      Hash[value].tap do |hash|
+        hash.extend(QueryHash)
+      end
+    end
+
     private
 
     def render_value(key, value)
