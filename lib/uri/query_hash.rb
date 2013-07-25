@@ -6,7 +6,7 @@ module URI
       unmentioned_keys = keys.reject { |key| args.include?(key.to_s) || args.include?(key.to_sym) }
       (
         args.uniq.map { |key| render_value(key, self[key]) }.reject { |i| i.nil? } +
-            unmentioned_keys.collect { |key| render_value(key, self[key]) }
+            unmentioned_keys.map { |key| render_value(key, self[key]) }
       ).join('&')
     end
 
