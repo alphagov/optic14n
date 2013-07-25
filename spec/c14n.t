@@ -1,3 +1,6 @@
+# Here for reference, see original at
+# https://github.com/alphagov/redirector/blob/master/tests/lib/c14n.t
+
 use strict;
 use Test::More;
 require 'lib/c14n.pl';
