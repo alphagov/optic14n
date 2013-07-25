@@ -34,6 +34,8 @@ module URI
 
     def query_hash
       @query_hash ||= CGI::parse(self.query || '').tap do |query_hash|
+        # By default, CGI::parse produces lots of arrays. Usually they have a single element
+        # in them. That's correct but not terribly usable. Fix it here.
         query_hash.each_pair { |k, v| query_hash[k] = v[0] if v.length == 1 }
         query_hash.extend QueryHash
       end
