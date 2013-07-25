@@ -25,7 +25,7 @@ module URI
 
     extend Forwardable
 
-    def_delegators :@uri, :scheme, :path, :host, :host=, :query, :to_s
+    def_delegators :@uri, :scheme, :path, :host, :host=, :query, :fragment, :to_s
 
     def initialize(uri_str)
       @uri = ::Addressable::URI.parse(uri_str)

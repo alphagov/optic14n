@@ -30,6 +30,9 @@ describe URI::BLURI do
   it 'should support query' do
     BLURI('http://foo?to=you&you=foo').query.should == 'to=you&you=foo'
   end
+  it 'should support fragment' do
+    BLURI('http://foo#fragment').fragment.should == 'fragment'
+  end
   it 'should support mailto:someone@somewhere' do
     BLURI('mailto:me@there.com').to_s.should == 'mailto:me@there.com'
   end
