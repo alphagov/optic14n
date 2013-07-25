@@ -30,6 +30,18 @@ Canonicalize it according to the Previously-Established Rules thusly:
   bluri.canonicalize!
 ```
 
+You can also do site-specific stuff if you know some of the querystring will be valuable
+```ruby
+  bluri.canonicalize!(allow_query: :all)
+```
+
+```ruby
+  bluri.canonicalize!(allow_query: [:a, :c])
+  # or
+  bluri.canonicalize!(allow_query: ['a', 'c'])
+```
+
+
 While you can also do things like
 
 ```ruby
