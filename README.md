@@ -18,7 +18,43 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Parse a `BLURI` like this:
+
+```ruby
+  bluri = BLURI('http://somewhere.com/?a=1&b=2&c=3')
+```
+
+Canonicalize it according to the Previously-Established Rules thusly:
+
+```ruby
+  bluri.canonicalize!
+```
+
+While you can also do things like
+
+```ruby
+  bluri.delete_keys(:a)
+```
+
+and
+
+```ruby
+  bluri['a'] = 99
+```
+
+these are a hangover from a previous use case and may not stick around.
+
+
+
+### The previously-established rules
+
+This is a gem for canonicalising HTTP URIs such that we can boil our input set of URIs down to something that is much
+smaller than it would otherwise be. We do this aggressively by:
+
+* lowercasing URIs
+* removing query strings (unless told otherwise)
+* removing fragments
+* escaping and unescaping various characters and escape sequences according to RFC3986
 
 ## Contributing
 
