@@ -69,22 +69,6 @@ describe URI::BLURI do
     end
   end
 
-  describe 'Deleting parts' do
-    it 'should remove specified parts' do
-      BLURI('http://foo?q=1&q2=2&q3=3&q4=4').delete_query_keys!(:q2, :q3).
-          query.should == 'q=1&q4=4'
-    end
-
-    it 'should leave parts not present' do
-      BLURI('http://foo?q=1').delete_query_keys!(:not_present).query.should == 'q=1'
-    end
-
-    it 'should allow removal of keys matching a regex' do
-      BLURI('http://foo?q=1&r1.l=2&r2.r=3&p=2').delete_query_keys_matching! { |k, _| k =~ /r[0-9]\..+/ }.
-          query.should == 'q=1&p=2'
-    end
-  end
-
   describe 'changing query keys' do
     it 'should let us alter parameters' do
       uri = BLURI('http://foo?q=1&r=2')
