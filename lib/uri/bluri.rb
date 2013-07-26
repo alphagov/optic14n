@@ -2,7 +2,7 @@
 
 module URI
   ##
-  # A URI class with a bit extra for messing about with query strings
+  # A URI class with a bit extra for canonicalising query strings
   #
   class BLURI < URI::HTTP
     PATH_ESCAPE_MAPPINGS = {

@@ -1,6 +1,6 @@
 module URI
   ##
-  # Extends a hash with query string reordering/deleting capabilities
+  # Extends a hash with query string rendering/semi-indifferent access
   module QueryHash
     def [](key)
       item = super key
