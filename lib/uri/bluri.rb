@@ -65,20 +65,6 @@ module URI
       %w(http https).include?(@uri.scheme) && query
     end
 
-    # BEGIN DODGY SECTION - get this onto the query hash somehow
-
-    ##
-    # Set a query key value
-    #
-    def []=(key, value)
-      return self unless has_query?
-      query_hash[key] = value
-      self.query = query_hash.to_s
-      self
-    end
-
-    # END DODGY SECTION
-
     def canonicalize!(options = {})
       @uri.scheme = 'http' if @uri.scheme == 'https'
 

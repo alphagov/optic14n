@@ -68,12 +68,4 @@ describe URI::BLURI do
       @bluri.to_s.should == 'http://some.com/a/path?furry=really'
     end
   end
-
-  describe 'changing query keys' do
-    it 'should let us alter parameters' do
-      uri = BLURI('http://foo?q=1&r=2')
-      uri['q'] = '3'
-      uri.to_s.should == 'http://foo?q=3&r=2'
-    end
-  end
 end
