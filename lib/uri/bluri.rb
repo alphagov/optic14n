@@ -68,16 +68,6 @@ module URI
     # BEGIN DODGY SECTION - get this onto the query hash somehow
 
     ##
-    # Reorder the query string according to symbols or string key values
-    # passed in in order
-    #
-    def reorder_query_string!(*args)
-      return self unless has_query?
-      self.query = query_hash.ordered_query_string(*args)
-      self
-    end
-
-    ##
     # Delete given query keys only
     # e.g. some_uri.delete_query_keys(:itemid, :topicid)
     #

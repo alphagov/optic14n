@@ -1,10 +1,6 @@
 require 'spec_helper'
 
 describe URI::BLURI do
-  ITEM_URI = 'http://www.businesslink.gov.uk/bdotg/action/detail?type=RESOURCES&itemId=1081912559'
-  RCODE_ITEM_URI = 'http://www.businesslink.gov.uk/bdotg/action/detail?type=RESOURCES&r.l1=2&r.l2=3&itemId=1081912559'
-  EXPECTED_QUERY = 'itemId=1081912559&type=RESOURCES'
-
   it 'should be an HTTP URI' do
     bluri = BLURI('http://some.where.com')
     bluri.should be_a URI::HTTP
@@ -18,31 +14,31 @@ describe URI::BLURI do
     lambda { BLURI(nil) }.should raise_error(URI::InvalidURIError)
   end
 
-  it 'should support scheme' do
+  it 'supports scheme' do
     BLURI('http://foo').scheme.should == 'http'
   end
-  it 'should support host' do
+  it 'supports host' do
     BLURI('http://foo').host.should == 'foo'
   end
-  it 'should support path' do
+  it 'supports path' do
     BLURI('http://foo/a/path').path.should == '/a/path'
   end
-  it 'should support query' do
+  it 'supports query' do
     BLURI('http://foo?to=you&you=foo').query.should == 'to=you&you=foo'
   end
-  it 'should support fragment' do
+  it 'supports fragment' do
     BLURI('http://foo#fragment').fragment.should == 'fragment'
   end
-  it 'should support mailto:someone@somewhere' do
+  it 'supports mailto:someone@somewhere' do
     BLURI('mailto:me@there.com').to_s.should == 'mailto:me@there.com'
   end
-  it 'should correct unencoded ampersands in mailto' do # http://www.faqs.org/rfcs/rfc2368.html
+  it 'corrects unencoded ampersands ins mailto' do # http://www.faqs.org/rfcs/rfc2368.html
     BLURI('mailto:fruit&veg.newcastle@rpa.gsi.gov.uk').to_s.should == 'mailto:fruit%26veg.newcastle@rpa.gsi.gov.uk'
   end
-  it 'should correct trailing spaces' do
+  it 'corrects trailing spaces' do
     BLURI('http://www.newspapersoc.org.uk ').to_s.should == 'http://www.newspapersoc.org.uk'
   end
-  it 'should correct leading spaces' do
+  it 'corrects leading spaces' do
     BLURI('  http://www.newspapersoc.org.uk').to_s.should == 'http://www.newspapersoc.org.uk'
   end
 
@@ -59,7 +55,7 @@ describe URI::BLURI do
       @bluri.query_hash[:itemid].should == '1'
     end
 
-    it 'should show nil for absent items' do
+    it 'shows nil for absent items' do
       @bluri.query_hash[:eerie_flash].should == nil
     end
 
@@ -70,43 +66,6 @@ describe URI::BLURI do
     it 'allows setting of the query' do
       @bluri.query = 'furry=really'
       @bluri.to_s.should == 'http://some.com/a/path?furry=really'
-    end
-
-    describe 'reordering the query string' do
-      it 'allows sorting of the query string by in-place replacement' do
-        @bluri.reorder_query_string!(:type, :itemid, :type)
-        @bluri.query.should == 'type=resource&itemid=1'
-      end
-
-      it 'should bunch repeated items up' do
-        bluri = BLURI('http://foo?itemid=1&type=2&itemid=3').reorder_query_string!(:itemid, :type)
-        bluri.query.should == 'itemid=1&itemid=3&type=2'
-      end
-
-      it "should leave out items that weren't there" do
-        bluri = BLURI('http://foo?itemid=1&type=RESOURCE')
-        bluri.reorder_query_string!(:granny_smith, :itemid)
-        bluri.to_s.should_not include('granny_smith')
-      end
-
-      it 'should not add a query string to a URL without one' do
-        bluri = BLURI('http://foo')
-        bluri.reorder_query_string!(:things)
-        bluri.to_s.should == 'http://foo'
-      end
-
-      it "should preserve items which weren't mentioned, but at the end" do
-        bluri = BLURI('http://foo?q1=1&q2=2&q3=3')
-        bluri.reorder_query_string!(:q3, :q1)
-        bluri.query.should == 'q3=3&q1=1&q2=2'
-      end
-
-      it 'should leave unmentioned singles alone' do
-        TOPIC_URI = 'http://www.businesslink.gov.uk/bdotg/action/layer?topicId=1074450344'
-        bluri = BLURI(TOPIC_URI)
-        bluri.reorder_query_string!(:itemid, :type)
-        bluri.to_s.should == TOPIC_URI
-      end
     end
   end
 
