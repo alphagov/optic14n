@@ -21,6 +21,10 @@ describe "Paul's tests, translated from Perl" do
     it 'drops multiple trailing slashes' do
       BLURI('http://www.example.com////').canonicalize!.to_s.should == 'http://www.example.com'
     end
+
+    it 'drops multiple trailing slashes on the path' do
+      BLURI('http://www.example.com/foo///').canonicalize!.to_s.should == 'http://www.example.com'
+    end
   end
 
   describe 'fragments' do
