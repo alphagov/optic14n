@@ -41,23 +41,6 @@ You can also do site-specific stuff if you know some of the querystring will be 
   bluri.canonicalize!(allow_query: ['a', 'c'])
 ```
 
-
-While you can also do things like
-
-```ruby
-  bluri.delete_keys(:a)
-```
-
-and
-
-```ruby
-  bluri['a'] = 99
-```
-
-these are a hangover from a previous use case and may not stick around.
-
-
-
 ### The previously-established rules
 
 This is a gem for canonicalising HTTP URIs such that we can boil our input set of URIs down to something that is much
