@@ -54,8 +54,7 @@ module URI
     def self.parse(uri_str)
       # Deal with known URI spec breaks - leading/trailing spaces and unencoded entities
       if uri_str.is_a? String
-        uri_str.downcase!
-        uri_str = uri_str.strip.gsub(' ', '%20')
+        uri_str = uri_str.strip.downcase.gsub(' ', '%20')
         uri_str.gsub!('&', '%26') if uri_str =~ /^mailto:.*&.*/
       end
       BLURI.new(uri_str)
