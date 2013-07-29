@@ -1,5 +1,9 @@
-require "bundler/gem_tasks"
-require "rspec/core/rake_task"
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+
+require 'bundler/gem_tasks'
+require 'rspec/core/rake_task'
+require 'optic14n'
+Dir.glob('lib/tasks/*.rake').each { |r| import r }
 
 RSpec::Core::RakeTask.new(:spec)
 
