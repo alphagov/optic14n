@@ -2,7 +2,7 @@ module Optic14n
   ##
   # Canonicalizes a set of URLs
   class CanonicalizedUrls
-    attr_reader :output_set, :seen
+    attr_reader :output_set, :seen, :each
 
     extend Forwardable
 
