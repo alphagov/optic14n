@@ -114,5 +114,14 @@ describe "Paul's tests, translated from Perl" do
           canonicalize!(allow_query: %w(foo bar baz)).to_s.should == 'http://www.example.com'
       end
     end
+
+    describe 'degenerate cases' do
+      it 'raises exceptions when there are RFC3986-breaking invalid UTF-8 sequences (we deal with these as failures)' do
+        lambda { BLURI(
+          'http://unistats.direct.gov.uk/searchResults.do?pname=institutesearchresults&level3Subjects=L3.35%AC10006842%ACFIRSTDEGREE%ACFulltime%AC360%ACNo%AC80%ACNo%AC89%ACNo%ACYes').
+            canonicalize!(allow_query: :all).to_s }.should raise_error(ArgumentError)
+
+      end
+    end
   end
 end

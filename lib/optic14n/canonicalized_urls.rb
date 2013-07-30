@@ -2,7 +2,7 @@ module Optic14n
   ##
   # Canonicalizes a set of URLs
   class CanonicalizedUrls
-    attr_reader :output_set, :seen, :each
+    attr_reader :output_set, :seen, :failures, :each
 
     extend Forwardable
 
@@ -15,10 +15,15 @@ module Optic14n
 
     def canonicalize!
       @seen = 0
+      @failures = {}
       @output_set = Set.new
 
       @urls.each do |url|
-        @output_set.add(BLURI(url).canonicalize!(@options))
+        begin
+          @output_set.add(BLURI(url).canonicalize!(@options))
+        rescue Exception => e
+          failures[url] = e
+        end
         @seen += 1
       end
     end
