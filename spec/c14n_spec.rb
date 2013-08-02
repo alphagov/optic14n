@@ -23,7 +23,7 @@ describe "Paul's tests, translated from Perl" do
     end
 
     it 'drops multiple trailing slashes on the path' do
-      BLURI('http://www.example.com/foo///').canonicalize!.to_s.should == 'http://www.example.com'
+      BLURI('http://www.example.com/foo///').canonicalize!.to_s.should == 'http://www.example.com/foo'
     end
   end
 
@@ -120,7 +120,15 @@ describe "Paul's tests, translated from Perl" do
         lambda { BLURI(
           'http://unistats.direct.gov.uk/searchResults.do?pname=institutesearchresults&level3Subjects=L3.35%AC10006842%ACFIRSTDEGREE%ACFulltime%AC360%ACNo%AC80%ACNo%AC89%ACNo%ACYes').
             canonicalize!(allow_query: :all).to_s }.should raise_error(ArgumentError)
+      end
 
+      describe 'failure to canonicalize paths correctly' do
+        # see https://www.pivotaltracker.com/s/projects/860575/stories/54502932
+
+        subject { BLURI('http://www.voa.gov.uk/stuff/?query=thing').canonicalize!(allow_query: :all) }
+
+        its(:path) { should eql('/stuff') }
+        its(:query) { should eql('query=thing') }
       end
     end
   end

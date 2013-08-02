@@ -67,7 +67,7 @@ module URI
     def canonicalize!(options = {})
       @uri.scheme = 'http' if @uri.scheme == 'https'
 
-      @uri.path = '' if @uri.path =~ /^*\/$/
+      @uri.path = @uri.path.sub(/\/*$/, '') if @uri.path =~ /^*\/$/
       @uri.path.gsub!(BLURI.path_escape_char_regex,   PATH_ESCAPE_MAPPINGS)
       @uri.path.gsub!(BLURI.path_unescape_code_regex, PATH_UNESCAPE_MAPPINGS)
 
