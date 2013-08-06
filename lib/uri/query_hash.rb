@@ -23,9 +23,11 @@ module URI
     private
 
     def render_value(key, value)
-      return nil if value.nil?
-      return value.map { |el| render_value(key, el) }.join('&') if value.kind_of? Array
-      "#{key}=#{CGI::escape(value)}"
+      case value
+        when nil   then key
+        when Array then value.map { |el| render_value(key, el) }.join('&')
+        else            "#{key}=#{CGI::escape(value)}"
+      end
     end
   end
 end

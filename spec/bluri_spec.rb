@@ -43,29 +43,46 @@ describe URI::BLURI do
   end
 
   describe 'Query string parsing' do
-    before do
-      @bluri = BLURI('http://some.com/a/path?itemid=1&type=RESOURCE')
+    context 'the query string is of HTML-encoded form k=v&q=p' do
+      before do
+        @bluri = BLURI('http://some.com/a/path?itemid=1&type=RESOURCE')
+      end
+
+      it 'indexes the query string' do
+        @bluri.query_hash['itemid'].should == '1'
+      end
+
+      it 'allows indexing by symbol' do
+        @bluri.query_hash[:itemid].should == '1'
+      end
+
+      it 'shows nil for absent items' do
+        @bluri.query_hash[:eerie_flash].should == nil
+      end
+
+      it 'indexes the second query string item' do
+        @bluri.query_hash['type'].should == 'resource'
+      end
+
+      it 'allows setting of the query' do
+        @bluri.query = 'furry=really'
+        @bluri.to_s.should == 'http://some.com/a/path?furry=really'
+      end
     end
 
-    it 'indexes the query string' do
-      @bluri.query_hash['itemid'].should == '1'
-    end
+    context 'the querystring is not an HTML-encoded thing' do
+      before do
+        @bluri = BLURI('http://some.com/a/path?foo&bar')
+      end
 
-    it 'allows indexing by symbol' do
-      @bluri.query_hash[:itemid].should == '1'
-    end
+      it 'retains the query string' do
+        @bluri.query.should == 'foo&bar'
+      end
 
-    it 'shows nil for absent items' do
-      @bluri.query_hash[:eerie_flash].should == nil
-    end
-
-    it 'indexes the second query string item' do
-      @bluri.query_hash['type'].should == 'resource'
-    end
-
-    it 'allows setting of the query' do
-      @bluri.query = 'furry=really'
-      @bluri.to_s.should == 'http://some.com/a/path?furry=really'
+      it 'has a query hash with empty elements' do
+        @bluri.query_hash['foo'].should == nil
+        @bluri.query_hash['foo'].should == nil
+      end
     end
   end
 end

@@ -113,6 +113,25 @@ describe "Paul's tests, translated from Perl" do
         BLURI('http://www.example.com?a=2322sdfsf&topic=334499&q=909&item=23444').
           canonicalize!(allow_query: %w(foo bar baz)).to_s.should == 'http://www.example.com'
       end
+
+      describe 'querystrings that are not an HTML-encoded thing' do
+        before do
+          @bluri = BLURI('http://some.com/a/path?foo&bar').canonicalize!(allow_query: :all)
+        end
+
+        it 'retains the query string' do
+          @bluri.query.should == 'bar&foo'
+        end
+
+        it 'has a query hash with empty elements' do
+          @bluri.query_hash['foo'].should == nil
+          @bluri.query_hash['bar'].should == nil
+        end
+
+        it 'renders the string properly' do
+          @bluri.query_hash.to_s.should == 'bar&foo'
+        end
+      end
     end
 
     describe 'degenerate cases' do
