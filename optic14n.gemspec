@@ -21,6 +21,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'addressable', '~> 2.3'
 
   spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'gemfury', '~> 0.4.17'
   spec.add_development_dependency 'gem_publisher', '~> 1.3.0'
 end
