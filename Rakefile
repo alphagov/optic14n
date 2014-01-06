@@ -7,9 +7,9 @@ Dir.glob('lib/tasks/*.rake').each { |r| import r }
 
 
 require 'gem_publisher'
-desc 'Publish gem to Gemfury'
+desc 'Publish gem to Rubygems'
 task :publish_gem do
-  gem = GemPublisher.publish_if_updated('optic14n.gemspec', :gemfury, :as => 'govuk')
+  gem = GemPublisher.publish_if_updated('optic14n.gemspec', :rubygems)
   puts "Published #{gem}" if gem
 end
 
