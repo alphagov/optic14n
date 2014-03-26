@@ -21,7 +21,7 @@ Or install it yourself as:
 Parse a `BLURI` like this:
 
 ```ruby
-  bluri = URI::BLURI('http://somewhere.com/?a=1&b=2&c=3')
+  bluri = BLURI('http://somewhere.com/?a=1&b=2&c=3')
 ```
 
 Canonicalize it according to the [Previously-Established Rules](#the-previously-established-rules) thusly:
