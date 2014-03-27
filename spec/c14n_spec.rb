@@ -86,14 +86,14 @@ describe "Paul's tests, translated from Perl" do
 
     describe 'allowing some or all query string values' do
       it 'allows named query_string parameters' do
-        BLURI('http://www.example.com/?q=foo').canonicalize!(allow_query: 'q').to_s.should ==
+        BLURI('http://www.example.com/?q=foo&r=bar').canonicalize!(allow_query: 'q').to_s.should ==
             'http://www.example.com?q=foo'
       end
       it 'sorts query string values' do
         BLURI('http://www.example.com?c=23&d=1&b=909&e=33&a=1').
           canonicalize!(allow_query: [:b,:e,:c,:d,:a]).to_s.should == 'http://www.example.com?a=1&b=909&c=23&d=1&e=33'
       end
-      it 'escapes querystring values' do
+      it 'encodes querystring values' do
         BLURI("http://www.example.com?a=you're_dangerous").canonicalize!(allow_query: :all).to_s.should ==
           'http://www.example.com?a=you%27re_dangerous'
       end
@@ -135,10 +135,19 @@ describe "Paul's tests, translated from Perl" do
     end
 
     describe 'degenerate cases' do
-      it 'raises exceptions when there are RFC3986-breaking invalid UTF-8 sequences (we deal with these as failures)' do
-        lambda { BLURI(
-          'http://unistats.direct.gov.uk/searchResults.do?pname=institutesearchresults&level3Subjects=L3.35%AC10006842%ACFIRSTDEGREE%ACFulltime%AC360%ACNo%AC80%ACNo%AC89%ACNo%ACYes').
-            canonicalize!(allow_query: :all).to_s }.should raise_error(ArgumentError)
+      describe 'the treatment of query strings when there are query string octets that unescape to '\
+               'invalid UTF-8 sequences (we no longer treat these as failures)' do
+        it 'no longer raises exceptions when there are bad things in query values' do
+          BLURI('http://example.com/path?view=%ED').
+            canonicalize!(allow_query: :all).
+            to_s.should eql('http://example.com/path?view=%ED')
+        end
+
+        it 're-encodes correctly when there are bad things in query keys' do
+          BLURI('http://example.com/path?%ED=view').
+            canonicalize!(allow_query: :all).
+            to_s.should eql('http://example.com/path?%ED=view')
+        end
       end
 
       describe 'failure to canonicalize paths correctly' do
