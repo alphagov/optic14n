@@ -9,6 +9,7 @@ describe Optic14n::CanonicalizedUrls do
         http://www.qhm.mod.uk/portsmouth/leisure/lntm?action=view
         http://www.qhm.mod.uk/portsmouth/leisure/lntm?action=view&id=199
         http://unistats.direct.gov.uk/searchResults.do?pname=institutesearchresults&level3Subjects=L3.90%AC10007761%ACFIRSTDEGREE%ACFulltime%AC430%ACNo%AC60%ACYes%AC83%ACNo%ACYes
+        1234://123
       )
     end
 
@@ -17,7 +18,7 @@ describe Optic14n::CanonicalizedUrls do
 
       it { should be_a(Optic14n::CanonicalizedUrls) }
 
-      its(:seen) { should eql(5) }
+      its(:seen) { should eql(6) }
 
       describe 'the output set' do
         subject(:output_set) { c14nizer.output_set }
@@ -40,7 +41,7 @@ describe Optic14n::CanonicalizedUrls do
       describe 'the output set' do
         subject(:output_set) { c14nizer.output_set }
 
-        its(:size) { should eql(4) }
+        its(:size) { should eql(5) }
       end
 
       describe 'failures' do
@@ -50,22 +51,8 @@ describe Optic14n::CanonicalizedUrls do
 
         it 'has our last URL and an error' do
           e = failures[test_urls.last]
-          e.should be_an(ArgumentError)
+          e.should be_an(Addressable::URI::InvalidURIError)
         end
-      end
-
-      describe 'failing cases found late' do
-        let(:test_urls) {
-          %w(
-            http://www.voa.gov.uk/
-            http://www.voa.gov.uk/stuff/
-            http://www.voa.gov.uk/things/?key=%ACxouyewf
-          )
-        }
-
-        its(:seen) { should eql(3) }
-        its(:output_set) { should have(2).urls }
-        its(:failures) { should have(1).url }
       end
     end
   end

@@ -26,7 +26,7 @@ module URI
       case value
         when nil   then key
         when Array then value.map { |el| render_value(key, el) }.join('&')
-        else            "#{key}=#{CGI::escape(value)}"
+        else            URI.encode_www_form_component(key) << '=' << URI.encode_www_form_component(value)
       end
     end
   end
