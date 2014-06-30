@@ -132,6 +132,22 @@ describe "Paul's tests, translated from Perl" do
           @bluri.query_hash.to_s.should == 'bar&foo'
         end
       end
+
+      describe 'casing of allowed query params' do
+        context 'when the query param contains upper-case letters' do
+          it 'does not preserve the query string, even when it appeared identically in the URL' do
+            BLURI('http://www.example.com/?Foo=bar').canonicalize!(allow_query: 'Foo').to_s.should ==
+                'http://www.example.com'
+          end
+        end
+
+        context 'when the query param is lower-cased' do
+          it 'preserves the query string and lower-cases it' do
+            BLURI('http://www.example.com/?Foo=bar').canonicalize!(allow_query: 'foo').to_s.should ==
+                'http://www.example.com?foo=bar'
+          end
+        end
+      end
     end
 
     describe 'degenerate cases' do
