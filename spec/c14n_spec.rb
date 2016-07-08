@@ -148,6 +148,19 @@ describe "Paul's tests, translated from Perl" do
           end
         end
       end
+
+      describe 'indifferent specfication of allowed query params' do
+        context 'specifying the allowed query param using either a symbol or a string' do
+          it 'should behave the same' do
+            url = 'http://example.com/some?significant=1&query_params=2'
+
+            using_symbol = BLURI(url).canonicalize!(allow_query: :significant)
+            using_string = BLURI(url).canonicalize!(allow_query: 'significant')
+
+            using_symbol.should == using_string
+          end
+        end
+      end
     end
 
     describe 'degenerate cases' do
@@ -163,6 +176,10 @@ describe "Paul's tests, translated from Perl" do
           BLURI('http://example.com/path?%ED=view').
             canonicalize!(allow_query: :all).
             to_s.should eql('http://example.com/path?%ED=view')
+        end
+
+        it 'does not error when there are bad things in query keys when allow_query isn\'t :all' do
+          expect { BLURI('http://some.com/a/path?%E2').canonicalize! }.not_to raise_error
         end
       end
 

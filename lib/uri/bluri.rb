@@ -79,10 +79,10 @@ module URI
 
     def canonicalize_query!(options)
       allow_all = (options[:allow_query] == :all)
-      allowed_keys = [options[:allow_query]].flatten.compact unless allow_all
+      allowed_keys = [options[:allow_query]].flatten.compact.map(&:to_s) unless allow_all
 
       query_hash.keep_if do |k, _|
-        allow_all || (allowed_keys.include?(k) || allowed_keys.include?(k.to_sym))
+        allow_all || (allowed_keys.include?(k.to_s))
       end
 
       self.query_hash = QueryHash[query_hash.sort_by { |k, _| k }]
