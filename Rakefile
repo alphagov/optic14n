@@ -1,19 +1,15 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
-require 'bundler/gem_tasks'
-require 'rspec/core/rake_task'
-require 'optic14n'
-Dir.glob('lib/tasks/*.rake').each { |r| import r }
-
-
-require 'gem_publisher'
-desc 'Publish gem to Rubygems'
-task :publish_gem do
-  gem = GemPublisher.publish_if_updated('optic14n.gemspec', :rubygems)
-  puts "Published #{gem}" if gem
+begin
+  require 'rspec/core/rake_task'
+  RSpec::Core::RakeTask.new(:spec)
+rescue LoadError
+  puts "Running in production mode"
 end
 
-RSpec::Core::RakeTask.new(:spec)
+require 'bundler/gem_tasks'
+require 'optic14n'
+Dir.glob('lib/tasks/*.rake').each { |r| import r }
 
 task default: :spec
 task test: :spec
