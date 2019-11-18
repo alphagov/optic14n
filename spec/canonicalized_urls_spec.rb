@@ -16,21 +16,27 @@ describe Optic14n::CanonicalizedUrls do
     context 'options[:allow_query] is false' do
       subject(:c14nizer) { Optic14n::CanonicalizedUrls.from_urls(test_urls, allow_query: false) }
 
-      it { should be_a(Optic14n::CanonicalizedUrls) }
+      it { is_expected.to be_a(Optic14n::CanonicalizedUrls) }
 
-      its(:seen) { should eql(6) }
+      describe '#seen' do
+        subject { super().seen }
+        it { is_expected.to eql(6) }
+      end
 
       describe 'the output set' do
         subject(:output_set) { c14nizer.output_set }
 
-        its(:size) { should eql(3) }
+        describe '#size' do
+          subject { super().size }
+          it { is_expected.to eql(3) }
+        end
 
         describe 'the items' do
           subject { output_set.map(&:to_s) }
 
-          it { should include('http://www.qhm.mod.uk/portsmouth/leisure/fuel') }
-          it { should include('http://www.qhm.mod.uk/portsmouth/leisure/lntm') }
-          it { should include('http://unistats.direct.gov.uk/searchresults.do') }
+          it { is_expected.to include('http://www.qhm.mod.uk/portsmouth/leisure/fuel') }
+          it { is_expected.to include('http://www.qhm.mod.uk/portsmouth/leisure/lntm') }
+          it { is_expected.to include('http://unistats.direct.gov.uk/searchresults.do') }
         end
       end
     end
@@ -41,17 +47,20 @@ describe Optic14n::CanonicalizedUrls do
       describe 'the output set' do
         subject(:output_set) { c14nizer.output_set }
 
-        its(:size) { should eql(5) }
+        describe '#size' do
+          subject { super().size }
+          it { is_expected.to eql(5) }
+        end
       end
 
       describe 'failures' do
         subject(:failures) { c14nizer.failures }
 
-        it { should be_a(Hash) }
+        it { is_expected.to be_a(Hash) }
 
         it 'has our last URL and an error' do
           e = failures[test_urls.last]
-          e.should be_an(Addressable::URI::InvalidURIError)
+          expect(e).to be_an(Addressable::URI::InvalidURIError)
         end
       end
     end

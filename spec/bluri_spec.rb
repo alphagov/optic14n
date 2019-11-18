@@ -3,43 +3,43 @@ require 'spec_helper'
 describe URI::BLURI do
   it 'should be an HTTP URI' do
     bluri = BLURI('http://some.where.com')
-    bluri.should be_a URI::HTTP
+    expect(bluri).to be_a URI::HTTP
   end
 
   it 'should not allow other schemes' do
-    lambda { BLURI('ftp://foo').should raise_error(ArgumentError) }
+    lambda { expect(BLURI('ftp://foo')).to raise_error(ArgumentError) }
   end
 
   it 'should not allow nil' do
-    lambda { BLURI(nil) }.should raise_error(URI::InvalidURIError)
+    expect { BLURI(nil) }.to raise_error(URI::InvalidURIError)
   end
 
   it 'supports scheme' do
-    BLURI('http://foo').scheme.should == 'http'
+    expect(BLURI('http://foo').scheme).to eq('http')
   end
   it 'supports host' do
-    BLURI('http://foo').host.should == 'foo'
+    expect(BLURI('http://foo').host).to eq('foo')
   end
   it 'supports path' do
-    BLURI('http://foo/a/path').path.should == '/a/path'
+    expect(BLURI('http://foo/a/path').path).to eq('/a/path')
   end
   it 'supports query' do
-    BLURI('http://foo?to=you&you=foo').query.should == 'to=you&you=foo'
+    expect(BLURI('http://foo?to=you&you=foo').query).to eq('to=you&you=foo')
   end
   it 'supports fragment' do
-    BLURI('http://foo#fragment').fragment.should == 'fragment'
+    expect(BLURI('http://foo#fragment').fragment).to eq('fragment')
   end
   it 'supports mailto:someone@somewhere' do
-    BLURI('mailto:me@there.com').to_s.should == 'mailto:me@there.com'
+    expect(BLURI('mailto:me@there.com').to_s).to eq('mailto:me@there.com')
   end
   it 'corrects unencoded ampersands ins mailto' do # http://www.faqs.org/rfcs/rfc2368.html
-    BLURI('mailto:fruit&veg.newcastle@rpa.gsi.gov.uk').to_s.should == 'mailto:fruit%26veg.newcastle@rpa.gsi.gov.uk'
+    expect(BLURI('mailto:fruit&veg.newcastle@rpa.gsi.gov.uk').to_s).to eq('mailto:fruit%26veg.newcastle@rpa.gsi.gov.uk')
   end
   it 'corrects trailing spaces' do
-    BLURI('http://www.newspapersoc.org.uk ').to_s.should == 'http://www.newspapersoc.org.uk'
+    expect(BLURI('http://www.newspapersoc.org.uk ').to_s).to eq('http://www.newspapersoc.org.uk')
   end
   it 'corrects leading spaces' do
-    BLURI('  http://www.newspapersoc.org.uk').to_s.should == 'http://www.newspapersoc.org.uk'
+    expect(BLURI('  http://www.newspapersoc.org.uk').to_s).to eq('http://www.newspapersoc.org.uk')
   end
 
   describe 'Query string parsing' do
@@ -49,24 +49,24 @@ describe URI::BLURI do
       end
 
       it 'indexes the query string' do
-        @bluri.query_hash['itemid'].should == '1'
+        expect(@bluri.query_hash['itemid']).to eq('1')
       end
 
       it 'allows indexing by symbol' do
-        @bluri.query_hash[:itemid].should == '1'
+        expect(@bluri.query_hash[:itemid]).to eq('1')
       end
 
       it 'shows nil for absent items' do
-        @bluri.query_hash[:eerie_flash].should == nil
+        expect(@bluri.query_hash[:eerie_flash]).to eq(nil)
       end
 
       it 'indexes the second query string item' do
-        @bluri.query_hash['type'].should == 'resource'
+        expect(@bluri.query_hash['type']).to eq('resource')
       end
 
       it 'allows setting of the query' do
         @bluri.query = 'furry=really'
-        @bluri.to_s.should == 'http://some.com/a/path?furry=really'
+        expect(@bluri.to_s).to eq('http://some.com/a/path?furry=really')
       end
     end
 
@@ -76,12 +76,12 @@ describe URI::BLURI do
       end
 
       it 'retains the query string' do
-        @bluri.query.should == 'foo&bar'
+        expect(@bluri.query).to eq('foo&bar')
       end
 
       it 'has a query hash with empty elements' do
-        @bluri.query_hash['foo'].should == nil
-        @bluri.query_hash['foo'].should == nil
+        expect(@bluri.query_hash['foo']).to eq(nil)
+        expect(@bluri.query_hash['foo']).to eq(nil)
       end
     end
   end
