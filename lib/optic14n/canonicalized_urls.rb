@@ -29,7 +29,7 @@ module Optic14n
     end
 
     def write(filename)
-      File.open(filename, 'w') do |file|
+      File.open(filename, "w") do |file|
         @output_set.each do |url|
           file.puts url
         end
@@ -39,7 +39,7 @@ module Optic14n
     ##
     # Canonicalize given urls. +options+ will be passed to +BLURI.parse+
     def self.from_urls(urls, options = {})
-      CanonicalizedUrls.new(urls, options).tap { |c| c.canonicalize! }
+      CanonicalizedUrls.new(urls, options).tap(&:canonicalize!)
     end
   end
 end
