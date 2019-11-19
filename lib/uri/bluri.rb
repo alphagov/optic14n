@@ -111,9 +111,13 @@ module URI
 end
 
 module Kernel
+  # rubocop:disable Naming/MethodName
   def BLURI(uri_str)
     ::URI::BLURI.parse(uri_str)
   end
+  # rubocop:enable Naming/MethodName
 
+  # rubocop:disable Style/AccessModifierDeclarations
   module_function :BLURI
+  # rubocop:enable Style/AccessModifierDeclarations
 end
