@@ -6,20 +6,20 @@ module URI
   #
   class BLURI < URI::HTTP
     PATH_ESCAPE_MAPPINGS = {
-      '[' => '%5b',
-      ']' => '%5d',
-      ',' => '%2c',
-      '"' => '%22',
-      "'" => '%27',
-      '|' => '%7c',
-      '!' => '%21',
-      '£' => '%c2%a3'
-    }
+      "[" => "%5b",
+      "]" => "%5d",
+      "," => "%2c",
+      '"' => "%22",
+      "'" => "%27",
+      "|" => "%7c",
+      "!" => "%21",
+      "£" => "%c2%a3",
+    }.freeze
 
     PATH_UNESCAPE_MAPPINGS = {
-      '%7e' => '~',
-      '%21' => '!'
-    }
+      "%7e" => "~",
+      "%21" => "!",
+    }.freeze
 
     REQUIRE_REGEX_ESCAPE = %w<. | ( ) [ ] { } + \ ^ $ * ?> & PATH_ESCAPE_MAPPINGS.keys
 
@@ -33,7 +33,7 @@ module URI
     end
 
     def query_hash
-      @query_hash ||= CGI::parse(self.query || '').tap do |query_hash|
+      @query_hash ||= CGI::parse(self.query || "").tap do |query_hash|
         # By default, CGI::parse produces lots of arrays. Usually they have a single element
         # in them. That's correct but not terribly usable. Fix it here.
         query_hash.each_pair { |k, v| query_hash[k] = v[0] if v.length == 1 }
@@ -43,19 +43,19 @@ module URI
 
     def query_hash=(value)
       @query_hash = value
-      @uri.query = @query_hash.to_s == '' ? nil : @query_hash.to_s
+      @uri.query = @query_hash.to_s == "" ? nil : @query_hash.to_s
     end
 
     def query=(query_str)
       @query_hash = nil
-      @uri.query = query_str == '' ? nil : query_str
+      @uri.query = query_str == "" ? nil : query_str
     end
 
     def self.parse(uri_str)
       # Deal with known URI spec breaks - leading/trailing spaces and unencoded entities
       if uri_str.is_a? String
-        uri_str = uri_str.strip.downcase.gsub(' ', '%20')
-        uri_str.gsub!('&', '%26') if uri_str =~ /^mailto:.*&.*/
+        uri_str = uri_str.strip.downcase.gsub(" ", "%20")
+        uri_str.gsub!("&", "%26") if uri_str =~ /^mailto:.*&.*/
       end
       BLURI.new(uri_str)
     end
@@ -65,9 +65,9 @@ module URI
     end
 
     def canonicalize!(options = {})
-      @uri.scheme = 'http' if @uri.scheme == 'https'
+      @uri.scheme = "http" if @uri.scheme == "https"
 
-      @uri.path = @uri.path.sub(/\/*$/, '') if @uri.path =~ /^*\/$/
+      @uri.path = @uri.path.sub(/\/*$/, "") if @uri.path =~ /^*\/$/
       @uri.path.gsub!(BLURI.path_escape_char_regex,   PATH_ESCAPE_MAPPINGS)
       @uri.path.gsub!(BLURI.path_unescape_code_regex, PATH_UNESCAPE_MAPPINGS)
 
@@ -82,7 +82,7 @@ module URI
       allowed_keys = [options[:allow_query]].flatten.compact.map(&:to_s) unless allow_all
 
       query_hash.keep_if do |k, _|
-        allow_all || (allowed_keys.include?(k.to_s))
+        allow_all || allowed_keys.include?(k.to_s)
       end
 
       self.query_hash = QueryHash[query_hash.sort_by { |k, _| k }]
@@ -91,26 +91,33 @@ module URI
     ##
     # Generate a regex which matches all characters in PATH_ESCAPE_MAPPINGS
     def self.path_escape_char_regex
-      @path_escape_char_regex ||=
-          Regexp.new('[' + PATH_ESCAPE_MAPPINGS.keys.map do |char|
-            REQUIRE_REGEX_ESCAPE.include?(char) ? "\\#{char}" : char
-          end.join + ']')
+      @path_escape_char_regex ||= begin
+        escaped_characters_for_regex = PATH_ESCAPE_MAPPINGS.keys.map do |char|
+          REQUIRE_REGEX_ESCAPE.include?(char) ? "\\#{char}" : char
+        end
+
+        Regexp.new("[" + escaped_characters_for_regex.join + "]")
+      end
     end
 
     ##
     # Generate a regex which matches all escape sequences in PATH_UNESCAPE_MAPPINGS
     def self.path_unescape_code_regex
       @path_unescape_code_regex ||= Regexp.new(
-        PATH_UNESCAPE_MAPPINGS.keys.map { |code| "(?:#{code})" }.join('|')
+        PATH_UNESCAPE_MAPPINGS.keys.map { |code| "(?:#{code})" }.join("|"),
       )
     end
   end
 end
 
 module Kernel
+  # rubocop:disable Naming/MethodName
   def BLURI(uri_str)
     ::URI::BLURI.parse(uri_str)
   end
+  # rubocop:enable Naming/MethodName
 
+  # rubocop:disable Style/AccessModifierDeclarations
   module_function :BLURI
+  # rubocop:enable Style/AccessModifierDeclarations
 end

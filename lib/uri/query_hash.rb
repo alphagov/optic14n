@@ -4,12 +4,12 @@ module URI
   module QueryHash
     def [](key)
       item = super key
-      item = super(key.to_s) if item.nil? || item.length == 0
-      item.class == Array && item.length == 0 ? nil : item
+      item = super(key.to_s) if item.nil? || item.empty?
+      item.class == Array && item.empty? ? nil : item
     end
 
     def to_s
-      keys.map { |key| render_value(key, self[key]) }.join('&')
+      keys.map { |key| render_value(key, self[key]) }.join("&")
     end
 
     ##
@@ -20,13 +20,13 @@ module URI
       end
     end
 
-    private
+  private
 
     def render_value(key, value)
       case value
-        when nil   then key
-        when Array then value.map { |el| render_value(key, el) }.join('&')
-        else            URI.encode_www_form_component(key) << '=' << URI.encode_www_form_component(value)
+      when nil   then key
+      when Array then value.map { |el| render_value(key, el) }.join("&")
+      else URI.encode_www_form_component(key) << "=" << URI.encode_www_form_component(value)
       end
     end
   end

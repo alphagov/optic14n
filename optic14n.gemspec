@@ -1,25 +1,27 @@
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
+
+lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'optic14n/version'
+require "optic14n/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = 'optic14n'
+  spec.name          = "optic14n"
   spec.version       = Optic14n::VERSION
-  spec.authors       = ['Russell Garner']
-  spec.email         = %w(rgarner@zephyros-systems.co.uk)
-  spec.description   = %q{Canonicalises URLs.}
-  spec.summary       = %q{Specifically, HTTP URLs, for a limited purpose}
-  spec.homepage      = ''
-  spec.license       = 'MIT'
+  spec.authors       = ["GOV.UK Dev"]
+  spec.email         = ["govuk-dev@digital.cabinet-office.gov.uk"]
+  spec.description   = "Canonicalises URLs."
+  spec.summary       = "Specifically, HTTP URLs, for a limited purpose"
+  spec.homepage      = "https://github.com/alphagov/optic14n"
+  spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = %w(lib)
 
-  spec.add_dependency 'addressable', '~> 2.3'
+  spec.add_dependency "addressable", "~> 2.7"
 
-  spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'gem_publisher', '~> 1.3.0'
+  spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rubocop-govuk", "~> 1.0.0"
 end
