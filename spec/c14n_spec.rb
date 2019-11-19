@@ -28,7 +28,7 @@ describe "Paul's tests, translated from Perl" do
   end
 
   describe "fragments" do
-    it "drops fragment identifier", reason: "They won""t be mapped, so are redundant" do
+    it "drops fragment identifier", reason: "They won't be mapped, so are redundant" do
       expect(BLURI("http://www.example.com#foo").canonicalize!.to_s).to eq("http://www.example.com")
     end
     it "drops fragment identifier and slashes" do
@@ -79,7 +79,7 @@ describe "Paul's tests, translated from Perl" do
     it "disallows all query string params by default" do
       expect(BLURI("http://www.example.com?q=foo").canonicalize!.to_s).to eq("http://www.example.com")
     end
-    it "disallows all params when there""s a slash" do
+    it "disallows all params when there's a slash" do
       expect(BLURI("http://www.example.com/?q=foo").canonicalize!.to_s).to eq("http://www.example.com")
     end
     it "disallows all params after a slash with fragid" do

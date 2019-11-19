@@ -21,7 +21,7 @@ module Optic14n
       @urls.each do |url|
         begin
           @output_set.add(BLURI(url).canonicalize!(@options))
-        rescue Exception => e
+        rescue StandardError => e
           failures[url] = e
         end
         @seen += 1

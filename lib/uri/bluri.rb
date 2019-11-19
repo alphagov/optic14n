@@ -91,10 +91,13 @@ module URI
     ##
     # Generate a regex which matches all characters in PATH_ESCAPE_MAPPINGS
     def self.path_escape_char_regex
-      @path_escape_char_regex ||=
-        Regexp.new("[" + PATH_ESCAPE_MAPPINGS.keys.map do |char|
+      @path_escape_char_regex ||= begin
+        escaped_characters_for_regex = PATH_ESCAPE_MAPPINGS.keys.map do |char|
           REQUIRE_REGEX_ESCAPE.include?(char) ? "\\#{char}" : char
-        end.join + "]")
+        end
+
+        Regexp.new("[" + escaped_characters_for_regex.join + "]")
+      end
     end
 
     ##
