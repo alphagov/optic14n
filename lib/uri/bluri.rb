@@ -29,7 +29,14 @@ module URI
 
     def initialize(uri_str)
       @uri = ::Addressable::URI.parse(uri_str)
-      raise URI::InvalidURIError, "'#{uri_str}' not a valid URI" unless @uri
+
+      raise URI::InvalidURIError, "'#{uri_str}' not a valid URI" unless valid_uri?
+    end
+
+    def valid_uri?
+      return unless @uri
+
+      %w[http https mailto].include?(@uri.scheme)
     end
 
     def query_hash
