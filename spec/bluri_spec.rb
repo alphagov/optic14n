@@ -7,7 +7,7 @@ describe URI::BLURI do
   end
 
   it "should not allow other schemes" do
-    lambda { expect(BLURI("ftp://foo")).to raise_error(ArgumentError) }
+    expect { BLURI("ftp://foo") }.to raise_error(URI::InvalidURIError)
   end
 
   it "should not allow nil" do

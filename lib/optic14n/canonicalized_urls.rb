@@ -1,3 +1,5 @@
+require "set"
+
 module Optic14n
   ##
   # Canonicalizes a set of URLs
