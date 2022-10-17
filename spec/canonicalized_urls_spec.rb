@@ -3,14 +3,14 @@ require "spec_helper"
 describe Optic14n::CanonicalizedUrls do
   describe "c14nize" do
     let(:test_urls) do
-      %w(
+      %w[
         http://www.qhm.mod.uk/portsmouth/leisure/fuel
         http://www.qhm.mod.uk/portsmouth/leisure/lntm?
         http://www.qhm.mod.uk/portsmouth/leisure/lntm?action=view
         http://www.qhm.mod.uk/portsmouth/leisure/lntm?action=view&id=199
         http://unistats.direct.gov.uk/searchResults.do?pname=institutesearchresults&level3Subjects=L3.90%AC10007761%ACFIRSTDEGREE%ACFulltime%AC430%ACNo%AC60%ACYes%AC83%ACNo%ACYes
         1234://123
-      )
+      ]
     end
 
     context "options[:allow_query] is false" do

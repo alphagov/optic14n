@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require "spec_helper"
 
 describe "Paul's tests, translated from Perl" do
@@ -67,8 +65,8 @@ describe "Paul's tests, translated from Perl" do
     end
     it "decodes non-reserved characters (! and ~)" do
       # My god, it's full of stars
-      expect(BLURI("http://www.example.com/%7eyes%20I%20have%20now%20read%20%5brfc%203986%5d%2C%20%26%20I%27m%20a%20%3Dlot%3D%20more%20reassured%21%21").
-          canonicalize!.to_s).to eq("http://www.example.com/~yes%20i%20have%20now%20read%20%5brfc%203986%5d%2c%20%26%20i%27m%20a%20%3dlot%3d%20more%20reassured!!")
+      expect(BLURI("http://www.example.com/%7eyes%20I%20have%20now%20read%20%5brfc%203986%5d%2C%20%26%20I%27m%20a%20%3Dlot%3D%20more%20reassured%21%21")
+          .canonicalize!.to_s).to eq("http://www.example.com/~yes%20i%20have%20now%20read%20%5brfc%203986%5d%2c%20%26%20i%27m%20a%20%3dlot%3d%20more%20reassured!!")
     end
     it "encodes pound signs" do
       expect(BLURI("https://www.example.com/pound-sign-£").canonicalize!.to_s).to eq("http://www.example.com/pound-sign-%c2%a3")
@@ -93,8 +91,8 @@ describe "Paul's tests, translated from Perl" do
         )
       end
       it "sorts query string values" do
-        expect(BLURI("http://www.example.com?c=23&d=1&b=909&e=33&a=1").
-          canonicalize!(allow_query: %i[b e c d a]).to_s).to eq("http://www.example.com?a=1&b=909&c=23&d=1&e=33")
+        expect(BLURI("http://www.example.com?c=23&d=1&b=909&e=33&a=1")
+          .canonicalize!(allow_query: %i[b e c d a]).to_s).to eq("http://www.example.com?a=1&b=909&c=23&d=1&e=33")
       end
       it "encodes querystring values" do
         expect(BLURI("http://www.example.com?a=you're_dangerous").canonicalize!(allow_query: :all).to_s).to eq(
@@ -107,16 +105,16 @@ describe "Paul's tests, translated from Perl" do
         )
       end
       it "converts matrix URI to query_string" do
-        expect(BLURI("http://www.example.com?c=23;d=1;b=909;e=33;a=1").
-          canonicalize!(allow_query: %i[b e c d a]).to_s).to eq("http://www.example.com?a=1&b=909&c=23&d=1&e=33")
+        expect(BLURI("http://www.example.com?c=23;d=1;b=909;e=33;a=1")
+          .canonicalize!(allow_query: %i[b e c d a]).to_s).to eq("http://www.example.com?a=1&b=909&c=23&d=1&e=33")
       end
       it "sorts cherry-picked query string arguments" do
-        expect(BLURI("http://www.example.com?a=2322sdfsf&topic=334499&q=909&item=23444").
-          canonicalize!(allow_query: %i[topic item]).to_s).to eq("http://www.example.com?item=23444&topic=334499")
+        expect(BLURI("http://www.example.com?a=2322sdfsf&topic=334499&q=909&item=23444")
+          .canonicalize!(allow_query: %i[topic item]).to_s).to eq("http://www.example.com?item=23444&topic=334499")
       end
       it "ignores empty querystring values" do
-        expect(BLURI("http://www.example.com?a=2322sdfsf&topic=334499&q=909&item=23444").
-          canonicalize!(allow_query: %w(foo bar baz)).to_s).to eq("http://www.example.com")
+        expect(BLURI("http://www.example.com?a=2322sdfsf&topic=334499&q=909&item=23444")
+          .canonicalize!(allow_query: %w[foo bar baz]).to_s).to eq("http://www.example.com")
       end
 
       describe "querystrings that are not an HTML-encoded thing" do
@@ -174,15 +172,15 @@ describe "Paul's tests, translated from Perl" do
       describe "the treatment of query strings when there are query string octets that unescape to "\
                "invalid UTF-8 sequences (we no longer treat these as failures)" do
         it "no longer raises exceptions when there are bad things in query values" do
-          expect(BLURI("http://example.com/path?view=%ED").
-            canonicalize!(allow_query: :all).
-            to_s).to eql("http://example.com/path?view=%ED")
+          expect(BLURI("http://example.com/path?view=%ED")
+            .canonicalize!(allow_query: :all)
+            .to_s).to eql("http://example.com/path?view=%ED")
         end
 
         it "re-encodes correctly when there are bad things in query keys" do
-          expect(BLURI("http://example.com/path?%ED=view").
-            canonicalize!(allow_query: :all).
-            to_s).to eql("http://example.com/path?%ED=view")
+          expect(BLURI("http://example.com/path?%ED=view")
+            .canonicalize!(allow_query: :all)
+            .to_s).to eql("http://example.com/path?%ED=view")
         end
 
         it "does not error when there are bad things in query keys when allow_query isn't :all" do

@@ -5,7 +5,7 @@ module URI
     def [](key)
       item = super key
       item = super(key.to_s) if item.nil? || item.empty?
-      item.class == Array && item.empty? ? nil : item
+      item.instance_of?(Array) && item.empty? ? nil : item
     end
 
     def to_s

@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 module URI
   ##
   # A URI class with a bit extra for canonicalising query strings
@@ -21,7 +19,7 @@ module URI
       "%21" => "!",
     }.freeze
 
-    REQUIRE_REGEX_ESCAPE = %w<. | ( ) [ ] { } + \ ^ $ * ?> & PATH_ESCAPE_MAPPINGS.keys
+    REQUIRE_REGEX_ESCAPE = [".", "|", "(", ")", "[", "]", "{", "}", "+", " ^", "$", "*", "?"] & PATH_ESCAPE_MAPPINGS.keys
 
     extend Forwardable
 
@@ -40,7 +38,7 @@ module URI
     end
 
     def query_hash
-      @query_hash ||= CGI::parse(self.query || "").tap do |query_hash|
+      @query_hash ||= CGI.parse(query || "").tap do |query_hash|
         # By default, CGI::parse produces lots of arrays. Usually they have a single element
         # in them. That's correct but not terribly usable. Fix it here.
         query_hash.each_pair { |k, v| query_hash[k] = v[0] if v.length == 1 }
@@ -68,7 +66,7 @@ module URI
     end
 
     def has_query?
-      %w(http https).include?(@uri.scheme) && query
+      %w[http https].include?(@uri.scheme) && query
     end
 
     def canonicalize!(options = {})
@@ -103,7 +101,7 @@ module URI
           REQUIRE_REGEX_ESCAPE.include?(char) ? "\\#{char}" : char
         end
 
-        Regexp.new("[" + escaped_characters_for_regex.join + "]")
+        Regexp.new("[#{escaped_characters_for_regex.join}]")
       end
     end
 
@@ -124,7 +122,5 @@ module Kernel
   end
   # rubocop:enable Naming/MethodName
 
-  # rubocop:disable Style/AccessModifierDeclarations
   module_function :BLURI
-  # rubocop:enable Style/AccessModifierDeclarations
 end
