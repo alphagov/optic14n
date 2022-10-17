@@ -25,7 +25,7 @@ module URI
 
     def_delegators :@uri, :scheme, :path, :host, :host=, :query, :fragment, :to_s
 
-    def initialize(uri_str)
+    def initialize(uri_str) # rubocop:disable Lint/MissingSuper - This class seems a reimplementation rather than an ancestor
       @uri = ::Addressable::URI.parse(uri_str)
 
       raise URI::InvalidURIError, "'#{uri_str}' not a valid URI" unless valid_uri?
