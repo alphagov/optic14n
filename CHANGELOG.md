@@ -8,4 +8,4 @@
 
 ## Unreleased
 
-- Drop support for Ruby < 2.7
+- Drop support for Ruby <= 2.7
