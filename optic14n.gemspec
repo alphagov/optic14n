@@ -24,5 +24,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
-  spec.add_development_dependency "rubocop-govuk", "4.18.0"
+  spec.add_development_dependency "rubocop-govuk", "5.0.0"
 end
