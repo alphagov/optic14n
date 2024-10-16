@@ -8,6 +8,10 @@
 
 ## Unreleased
 
-- Drop support for Ruby <= 2.7
-- Drop support for Ruby 3.0. The minimum required Ruby version is now 3.1.4.
-- Add support for Ruby 3.3.
+## 3.0.0
+
+[Full diff](https://github.com/alphagov/optic14n/compare/v2.1.0...v3.0.0)
+
+- BREAKING: Bump minimum Ruby version from 2.6.5 to 3.1.4
+- Add support for Ruby 3.3
+- BREAKING: Bump minimum rubocop-govuk version from 1.0.0 to 5.0.2
