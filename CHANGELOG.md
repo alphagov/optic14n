@@ -1,8 +1,8 @@
-# 3.0.2
+# Changelog
+
+## 3.0.2
 
 * Update dependencies
-
-# Changelog
 
 ## 3.0.1
 
