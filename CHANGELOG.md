@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* BREAKING: Drop support for Ruby 3.1 [PR](https://github.com/alphagov/optic14n/pull/64)
+
 ## 3.0.2
 
 * Update dependencies
