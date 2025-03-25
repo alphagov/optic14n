@@ -1,5 +1,3 @@
-require "set"
-
 namespace :opt do
   desc "Measure reduction from canonicalisation"
   task :measure, [:filename, :output_file] do |_, args|
