@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.2.0
+
+* Support Ruby 4.0
+
 ## 4.1.0
 
 * Drop support for Ruby 3.2
